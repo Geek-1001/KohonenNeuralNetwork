@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/KohonenNeuralNetwork.iml" filepath="$PROJECT_DIR$/KohonenNeuralNetwork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KohonenNeuralNetwork/KohonenNeuralNetwork-KohonenNeuralNetwork.iml" filepath="$PROJECT_DIR$/KohonenNeuralNetwork/KohonenNeuralNetwork-KohonenNeuralNetwork.iml" />
+    </modules>
+  </component>
+</project>
+
