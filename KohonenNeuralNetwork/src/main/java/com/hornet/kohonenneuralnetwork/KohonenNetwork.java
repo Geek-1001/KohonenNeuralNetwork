@@ -7,14 +7,16 @@ public class KohonenNetwork {
 
 // #MARK - Constants
 
+    private KohonenNetworkBuilder networkBuilder;
+
 // #MARK - Constructors
 
     KohonenNetwork(){
-
+        this.networkBuilder = null;
     }
 
     KohonenNetwork(KohonenNetworkBuilder networkBuilder){
-
+        this.networkBuilder = networkBuilder;
     }
 
 // #MARK - Custom Methods
