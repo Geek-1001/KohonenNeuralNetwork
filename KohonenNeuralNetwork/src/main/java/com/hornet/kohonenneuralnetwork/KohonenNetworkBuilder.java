@@ -10,7 +10,6 @@ public class KohonenNetworkBuilder {
     //public static final int
     private int clustersNumber;
     private int inputsNumber;
-    private boolean isRandomClustersPrototypes;
     private boolean isRandomEdgesWeight;
 
     private double[] edgesWeightArray;
@@ -21,23 +20,21 @@ public class KohonenNetworkBuilder {
         this.clustersNumber = 0;
         this.inputsNumber = 0;
         this.isRandomEdgesWeight = true;
-        this.isRandomClustersPrototypes = true;
+
+        this.edgesWeightArray = null;
     }
 
     KohonenNetworkBuilder(int clustersNumber, int inputsNumber){
         this.clustersNumber = clustersNumber;
         this.inputsNumber = inputsNumber;
         this.isRandomEdgesWeight = true;
-        this.isRandomClustersPrototypes = true;
+
+        this.edgesWeightArray = null;
     }
 
 // #MARK - Custom Methods
 
     // #MARK - Setters
-
-    public void setRandomClustersPrototypes(boolean state){
-        this.isRandomClustersPrototypes = state;
-    }
 
     public void setRandomEdgesWeight(boolean state){
         this.isRandomEdgesWeight = state;
@@ -67,10 +64,6 @@ public class KohonenNetworkBuilder {
 
     public int getClustersNumber(){
         return this.clustersNumber;
-    }
-
-    public boolean isRandomClustersPrototypes(){
-        return this.isRandomClustersPrototypes;
     }
 
     public boolean isRandomEdgesWeight(){

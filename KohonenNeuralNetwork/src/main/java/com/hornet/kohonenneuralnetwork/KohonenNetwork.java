@@ -9,27 +9,73 @@ public class KohonenNetwork {
 
 // #MARK - Constants
 
-//    private KohonenNetworkBuilder networkBuilder;
-
     private Edge[] inputEdges;
     private Edge[] outputEdges;
     private ClusterNeuron[] clusters;
+
+    // TODO: create learning process
+    private boolean isLearned = false;
 
 
 // #MARK - Constructors
 
     KohonenNetwork(){
-//        this.networkBuilder = null;
+        buildNetwork(null);
     }
 
     KohonenNetwork(KohonenNetworkBuilder networkBuilder){
-//        this.networkBuilder = networkBuilder;
+        buildNetwork(networkBuilder);
     }
 
 // #MARK - Custom Methods
 
+    public void setInputSignal(double[] inputSignal){
+        if(inputSignal.length != this.inputEdges.length){
+            throw new IllegalArgumentException("Input signal length should be equal to input edges count");
+        }
+        for(int i = 0; i < inputSignal.length; ++i){
+            this.inputEdges[i].setSignal(inputSignal[i]);
+        }
+    }
+
+    public double[] getOutputSignal(){
+        double minimumEuclideanDistance = Integer.MAX_VALUE;
+        int clusterWinnerIndex = 0;
+        for(int i = 0; i < this.clusters.length; ++i){
+            if(clusters[i].getOutputSignal() < minimumEuclideanDistance){
+                minimumEuclideanDistance = clusters[i].getOutputSignal();
+                clusterWinnerIndex = i;
+            }
+        }
+        return getOutputSignalWithClusterWinner(clusterWinnerIndex);
+    }
+
+    private double[] getOutputSignalWithClusterWinner(int clusterWinnerIndex){
+        double[] outputSignal = new double[this.clusters.length];
+        int currentSignal;
+        for(int i = 0; i < this.clusters.length; ++i){
+            currentSignal = 0;
+            if(i == clusterWinnerIndex){
+                currentSignal = 1;
+            }
+            clusters[i].setOutputSignal(currentSignal);
+            outputSignal[i] = currentSignal;
+        }
+        return outputSignal;
+    }
+
+// #MARK - Network Building Methods
+
     private void buildNetwork(KohonenNetworkBuilder networkBuilder){
         // TODO: rewrite with edges weight remember. With learning process.
+        // TODO: Get remembered value of weight from this method
+
+        if(networkBuilder == null){
+            this.inputEdges = null;
+            this.clusters = null;
+            this.outputEdges = null;
+            return;
+        }
 
         // Create input edges
         double[] edgesWeightArray = networkBuilder.getEdgesWeightArray();
@@ -41,26 +87,19 @@ public class KohonenNetwork {
             }
         }
         this.inputEdges = buildInputEdges(networkBuilder.getInputsNumber(), edgesWeightArray);
-
-        // Create output edges
         this.outputEdges = buildOutputEdges(networkBuilder.getClustersNumber());
-
-        // Create clusters
         this.clusters = buildClusterNeurons(networkBuilder.getClustersNumber(), this.inputEdges, this.outputEdges);
-
     }
 
-    private Edge[] buildInputEdges(int inputEdgeCount, double[] edgesWeightArray){
-        return null;
-    }
-
-    private Edge[] buildOutputEdges(int outputEdgeCount){
-        Edge[] outputEdges = new Edge[outputEdgeCount];
-        for(int i = 0; i < outputEdgeCount; ++i){
-            Edge outputEdge = new Edge(0, 0);
-            outputEdges[i] = outputEdge;
+    private Edge[] buildInputEdges(int inputEdgesCount, double[] edgesWeightArray){
+        Edge[] inputEdges = new Edge[inputEdgesCount];
+        for(int i = 0; i < inputEdgesCount;){
+            Edge inputEdge = new Edge();
+            inputEdge.setSignal(0);
+            inputEdge.setWeight(edgesWeightArray[i]);
+            inputEdges[i] = inputEdge;
         }
-        return outputEdges;
+        return inputEdges;
     }
 
     private ClusterNeuron[] buildClusterNeurons(int clusterNeuronsCount, Edge[] inputEdges, Edge[] outputEdges){
@@ -72,26 +111,13 @@ public class KohonenNetwork {
         return clusters;
     }
 
-    public void setInputSignal(double[] inputSignal){
-        if(inputSignal.length != this.inputEdges.length){
-            throw new IllegalArgumentException("Input signal length should be equal to input edges count");
+    private Edge[] buildOutputEdges(int outputEdgesCount){
+        Edge[] outputEdges = new Edge[outputEdgesCount];
+        for(int i = 0; i < outputEdgesCount; ++i){
+            Edge outputEdge = new Edge(0, 0);
+            outputEdges[i] = outputEdge;
         }
-
+        return outputEdges;
     }
-
-    public double getOutputSignalForCluster(int clusterIndex){
-        if(clusterIndex > this.clusters.length || clusterIndex < 0){
-            throw new IllegalArgumentException("Cluster index should be < cluster count");
-        }
-
-        return 0;
-    }
-
-    public double[] getOutputSignal(){
-
-        return null;
-    }
-
-
 
 }
