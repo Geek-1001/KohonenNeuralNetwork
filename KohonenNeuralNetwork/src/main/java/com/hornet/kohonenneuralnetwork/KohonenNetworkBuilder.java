@@ -33,6 +33,8 @@ public class KohonenNetworkBuilder {
 
 // #MARK - Custom Methods
 
+    // #MARK - Setters
+
     public void setRandomClustersPrototypes(boolean state){
         this.isRandomClustersPrototypes = state;
     }
@@ -51,6 +53,28 @@ public class KohonenNetworkBuilder {
 
     public void setEdgesWeightArray(double[] weight){
         this.edgesWeightArray = weight;
+    }
+
+    // #MARK - Getters
+
+    public double[] getEdgesWeightArray(){
+        return this.edgesWeightArray;
+    }
+
+    public int getInputsNumber(){
+        return this.inputsNumber;
+    }
+
+    public int getClustersNumber(){
+        return this.clustersNumber;
+    }
+
+    public boolean isRandomClustersPrototypes(){
+        return this.isRandomClustersPrototypes;
+    }
+
+    public boolean isRandomEdgesWeight(){
+        return this.isRandomEdgesWeight;
     }
 
 }
