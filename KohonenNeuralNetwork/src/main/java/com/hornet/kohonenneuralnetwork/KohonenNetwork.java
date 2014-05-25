@@ -120,4 +120,8 @@ public class KohonenNetwork {
         return outputEdges;
     }
 
+// #MARK - Learning Methods
+
+
+
 }

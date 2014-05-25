@@ -27,6 +27,8 @@ public class Edge {
         this.weight = weight;
     }
 
+    // TODO: create init method for constructors
+
 // #MARK - Custom Methods
 
     public void setSignal(double signal){

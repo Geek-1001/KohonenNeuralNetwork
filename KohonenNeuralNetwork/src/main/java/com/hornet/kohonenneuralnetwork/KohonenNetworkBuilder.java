@@ -32,6 +32,8 @@ public class KohonenNetworkBuilder {
         this.edgesWeightArray = null;
     }
 
+    // TODO: create init method for constructors
+
 // #MARK - Custom Methods
 
     // #MARK - Setters
