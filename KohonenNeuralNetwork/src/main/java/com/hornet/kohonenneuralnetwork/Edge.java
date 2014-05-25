@@ -13,21 +13,21 @@ public class Edge {
 // #MARK - Constructors
 
     Edge(){
-        this.signal = 0;
-        this.weight = 0;
+        init(0, 0);
     }
 
     Edge(double weight){
-        this.signal = 0;
-        this.weight = weight;
+        init(weight, 0);
     }
 
     Edge(double weight, double signal){
+        init(weight, signal);
+    }
+
+    private void init(double weight, double signal){
         this.signal = signal;
         this.weight = weight;
     }
-
-    // TODO: create init method for constructors
 
 // #MARK - Custom Methods
 

@@ -48,6 +48,9 @@ public abstract class Neuron {
      * @return array of all signals from every input edge connected to current neuron
      */
     protected double[] getInputSignal(Edge[] inputEdges){
+        if(inputEdges == null){
+            return null;
+        }
         double[] signal = new double[inputEdges.length];
         for(int i = 0; i < inputEdges.length; ++i){
             signal[i] = inputEdges[i].getSignal();
@@ -60,6 +63,9 @@ public abstract class Neuron {
      * @return array of all weights from every input edge connected to current neuron
      */
     protected double[] getWeight(Edge[] inputEdges){
+        if(inputEdges == null){
+            return null;
+        }
         double[] weight = new double[inputEdges.length];
         for(int i = 0; i < inputEdges.length; ++i){
             weight[i] = inputEdges[i].getWeight();

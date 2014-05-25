@@ -17,22 +17,19 @@ public class KohonenNetworkBuilder {
 // #MARK - Constructors
 
     KohonenNetworkBuilder(){
-        this.clustersNumber = 0;
-        this.inputsNumber = 0;
-        this.isRandomEdgesWeight = true;
-
-        this.edgesWeightArray = null;
+        init(0, 0);
     }
 
     KohonenNetworkBuilder(int clustersNumber, int inputsNumber){
+        init(clustersNumber, inputsNumber);
+    }
+
+    private void init(int clustersNumber, int inputsNumber){
         this.clustersNumber = clustersNumber;
         this.inputsNumber = inputsNumber;
         this.isRandomEdgesWeight = true;
-
         this.edgesWeightArray = null;
     }
-
-    // TODO: create init method for constructors
 
 // #MARK - Custom Methods
 

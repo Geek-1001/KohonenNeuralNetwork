@@ -13,17 +13,16 @@ public class ClusterNeuron extends Neuron {
 // #MARK - Constructors
 
     ClusterNeuron(){
-        this.inputEdges = null;
-        this.outputEdge = null;
-
-        this.clusterPrototype = null;
-        this.currentSignal = null;
+        init(null, null);
     }
 
     ClusterNeuron(Edge[] inputEdges, Edge outputEdge){
+        init(inputEdges, outputEdge);
+    }
+
+    private void init(Edge[] inputEdges, Edge outputEdge){
         this.inputEdges = inputEdges;
         this.outputEdge = outputEdge;
-
         this.clusterPrototype = this.getWeight(inputEdges);
         this.currentSignal = this.getInputSignal(inputEdges);
     }
