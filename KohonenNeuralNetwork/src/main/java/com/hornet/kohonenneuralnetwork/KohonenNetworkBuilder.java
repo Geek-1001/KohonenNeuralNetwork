@@ -1,5 +1,7 @@
 package com.hornet.kohonenneuralnetwork;
 
+import java.util.List;
+
 /**
  * Created by Ahmed on 5/17/14.
  */
@@ -12,7 +14,8 @@ public class KohonenNetworkBuilder {
     private int inputsNumber;
     private boolean isRandomEdgesWeight;
 
-    private double[] edgesWeightArray;
+    //private double[] edgesWeightArray;
+    private List<double[]> edgesWeightList;
 
 // #MARK - Constructors
 
@@ -28,7 +31,7 @@ public class KohonenNetworkBuilder {
         this.clustersNumber = clustersNumber;
         this.inputsNumber = inputsNumber;
         this.isRandomEdgesWeight = true;
-        this.edgesWeightArray = null;
+        this.edgesWeightList = null;
     }
 
 // #MARK - Custom Methods
@@ -47,14 +50,14 @@ public class KohonenNetworkBuilder {
         this.inputsNumber = inputsNumber;
     }
 
-    public void setEdgesWeightArray(double[] weight){
-        this.edgesWeightArray = weight;
+    public void setEdgesWeightList(List<double[]> weight){
+        this.edgesWeightList = weight;
     }
 
     // #MARK - Getters
 
-    public double[] getEdgesWeightArray(){
-        return this.edgesWeightArray;
+    public List<double[]> getEdgesWeightList(){
+        return this.edgesWeightList;
     }
 
     public int getInputsNumber(){

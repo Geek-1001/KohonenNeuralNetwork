@@ -92,15 +92,21 @@ public class KohonenNetwork {
             return;
         }
 
+
+
         // Create input edges
-        double[] edgesWeightArray = networkBuilder.getEdgesWeightArray();
+        List<double[]> edgesWeightArray = networkBuilder.getEdgesWeightList();
+
         if(networkBuilder.isRandomEdgesWeight()){
+
             edgesWeightArray = new double[networkBuilder.getInputsNumber()];
             Random random = new Random();
             for(int i = 0; i < networkBuilder.getInputsNumber(); ++i){
                 edgesWeightArray[i] = random.nextDouble();
             }
+
         }
+
         this.inputEdges = buildInputEdges(networkBuilder.getInputsNumber(), edgesWeightArray);
         this.outputEdges = buildOutputEdges(networkBuilder.getClustersNumber());
         this.clusters = buildClusterNeurons(networkBuilder.getClustersNumber(), this.inputEdges, this.outputEdges);
