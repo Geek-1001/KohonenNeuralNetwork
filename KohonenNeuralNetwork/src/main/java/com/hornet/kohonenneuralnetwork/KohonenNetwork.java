@@ -9,16 +9,11 @@ import java.util.Random;
  * Created by Ahmed on 5/18/14.
  */
 
-// TODO: rewrite network building algorithm
-// TODO: change Custom Methods part. Adapt to new network structure
-
 public class KohonenNetwork {
 
 // #MARK - Constants
 
-    //private Edge[] inputEdges;
     private List<Edge[]> inputEdges;
-
     private Edge[] outputEdges;
     private ClusterNeuron[] clusters;
 
@@ -93,9 +88,6 @@ public class KohonenNetwork {
             return;
         }
 
-
-
-        // Create input edges
         List<double[]> edgesWeightList = networkBuilder.getEdgesWeightList();
         if(networkBuilder.isRandomEdgesWeight()){
             edgesWeightList = new ArrayList<double[]>(networkBuilder.getInputsNumber());
@@ -108,30 +100,11 @@ public class KohonenNetwork {
                 edgesWeightList.add(edgesWeight);
             }
         }
-
-        //this.inputEdges = buildInputEdges(networkBuilder.getInputsNumber(), edgesWeightArray);
         buildInputEdges(networkBuilder.getInputsNumber(), networkBuilder.getClustersNumber(), edgesWeightList);
-
-        //this.outputEdges = buildOutputEdges(networkBuilder.getClustersNumber());
         buildOutputEdges(networkBuilder.getClustersNumber());
-
-        //this.clusters = buildClusterNeurons(networkBuilder.getClustersNumber(), this.inputEdges, this.outputEdges);
         buildClusterNeurons(networkBuilder.getClustersNumber());
-
     }
 
-/*
-    private Edge[] buildInputEdges(int inputEdgesCount, double[] edgesWeightArray){
-        Edge[] inputEdges = new Edge[inputEdgesCount];
-        for(int i = 0; i < inputEdgesCount;){
-            Edge inputEdge = new Edge();
-            inputEdge.setSignal(0);
-            inputEdge.setWeight(edgesWeightArray[i]);
-            inputEdges[i] = inputEdge;
-        }
-        return inputEdges;
-    }
-*/
     private void buildInputEdges(int inputsCount, int clusterNeuronsCount, List<double[]> edgesWeightList) {
         this.inputEdges = new ArrayList<Edge[]>(inputsCount);
         for(int i = 0; i < this.inputEdges.size(); ++i){
@@ -145,16 +118,6 @@ public class KohonenNetwork {
         }
     }
 
-/*
-    private ClusterNeuron[] buildClusterNeurons(int clusterNeuronsCount, Edge[] inputEdges, Edge[] outputEdges){
-        ClusterNeuron[] clusters = new ClusterNeuron[clusterNeuronsCount];
-        for(int i = 0; i < clusterNeuronsCount; ++i){
-            ClusterNeuron clusterNeuron = new ClusterNeuron(inputEdges, outputEdges[i]);
-            clusters[i] = clusterNeuron;
-        }
-        return clusters;
-    }
-*/
     private void buildClusterNeurons(int clusterNeuronsCount){
         this.clusters = new ClusterNeuron[clusterNeuronsCount];
         for(int i = 0; i < this.clusters.length; ++i){
@@ -162,17 +125,6 @@ public class KohonenNetwork {
             this.clusters[i] = clusterNeuron;
         }
     }
-
-/*
-    private Edge[] buildOutputEdges(int outputEdgesCount){
-        Edge[] outputEdges = new Edge[outputEdgesCount];
-        for(int i = 0; i < outputEdgesCount; ++i){
-            Edge outputEdge = new Edge(0, 0);
-            outputEdges[i] = outputEdge;
-        }
-        return outputEdges;
-    }
-*/
 
     private void buildOutputEdges(int outputEdgesCount){
         this.outputEdges = new Edge[outputEdgesCount];
