@@ -1,15 +1,23 @@
 package com.hornet.kohonenneuralnetwork;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 /**
  * Created by Ahmed on 5/18/14.
  */
+
+// TODO: rewrite network building algorithm
+// TODO: change Custom Methods part. Adapt to new network structure
+
 public class KohonenNetwork {
 
 // #MARK - Constants
 
-    private Edge[] inputEdges;
+    //private Edge[] inputEdges;
+    private List<Edge[]> inputEdges;
+
     private Edge[] outputEdges;
     private ClusterNeuron[] clusters;
 
@@ -30,12 +38,19 @@ public class KohonenNetwork {
 // #MARK - Custom Methods
 
     public void setInputSignal(double[] inputSignal){
-        if(inputSignal.length != this.inputEdges.length){
+        if(inputSignal.length != this.inputEdges.size()){
             throw new IllegalArgumentException("Input signal length should be equal to input edges count");
         }
-        for(int i = 0; i < inputSignal.length; ++i){
-            this.inputEdges[i].setSignal(inputSignal[i]);
+        int inputSignalIndex = 0;
+        Iterator<Edge[]> inputEdgesIterator = inputEdges.iterator();
+        while(inputEdgesIterator.hasNext()){
+            Edge[] edges = inputEdgesIterator.next();
+            for(Edge edge : edges){
+                edge.setSignal(inputSignal[inputSignalIndex]);
+            }
+            inputSignalIndex++;
         }
+
     }
 
     public double[] getOutputSignal(){
