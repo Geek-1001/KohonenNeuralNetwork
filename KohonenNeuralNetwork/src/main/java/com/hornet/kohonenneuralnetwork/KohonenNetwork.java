@@ -1,5 +1,6 @@
 package com.hornet.kohonenneuralnetwork;
 
+import java.io.OptionalDataException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -136,6 +137,132 @@ public class KohonenNetwork {
 
 // #MARK - Learning Methods
 
+    public void startLearning(KohonenNetworkLearningBuilder learningBuilder){
 
+        for(int i = 0; i < learningBuilder.getLearningEraCount(); ++i){
+
+
+
+        }
+
+    }
+
+    private void learn(List<double[]> learningVectorsList, int updateRadius, double learningNorm){
+
+        Iterator<double[]> learningVectorsIterator = learningVectorsList.iterator();
+
+        while(learningVectorsIterator.hasNext()){
+
+            double[] currentLearningVector = learningVectorsIterator.next();
+            setInputSignal(currentLearningVector);
+
+            int clusterWinnerIndex = getClusterWinnerIndex(this.clusters.length, this.clusters);
+            updateClustersInputEdgesWeight(clusterWinnerIndex, learningNorm);
+
+            OptimalClusterUpdatePosition optimalClusterUpdatePosition = getOptimalClusterUpdatePosition(updateRadius, this.clusters.length);
+
+            // TODO: make separate method for update clusters near cluster winner. Rewrite this part
+            for(int i = 1; i != updateRadius; ++i){
+
+                int currentUpdateIndexIncrement = clusterWinnerIndex + i;
+                int currentUpdateIndexDecrement = clusterWinnerIndex - i;
+
+                if(currentUpdateIndexIncrement >= optimalClusterUpdatePosition.getStart() && currentUpdateIndexIncrement <= optimalClusterUpdatePosition.getEnd()){
+                    updateClustersInputEdgesWeight(currentUpdateIndexIncrement, learningNorm);
+                } else {
+                    if(currentUpdateIndexIncrement < this.clusters.length){
+                        updateClustersInputEdgesWeight(currentUpdateIndexIncrement, learningNorm);
+                    }
+                }
+
+                if(currentUpdateIndexDecrement >= optimalClusterUpdatePosition.getStart() && currentUpdateIndexDecrement <= optimalClusterUpdatePosition.getEnd()){
+                    updateClustersInputEdgesWeight(currentUpdateIndexDecrement, learningNorm);
+                } else {
+                    if(currentUpdateIndexDecrement >= 0){
+                        updateClustersInputEdgesWeight(currentUpdateIndexDecrement, learningNorm);
+                    }
+                }
+
+
+            }
+
+
+
+
+        }
+
+
+    }
+
+    private int getUpdatedLearningRadius(int currentRadius){
+        int radius = currentRadius;
+        if(currentRadius != 0){
+            radius--;
+        }
+        return radius;
+    }
+
+    private double getUpdatedLearningNorm(double currentLearningNorm, double learningNormTo, double learningNormDecrementStepValue){
+        double learningNorm = currentLearningNorm;
+        if(currentLearningNorm >= learningNormTo){
+            learningNorm = currentLearningNorm - learningNormDecrementStepValue;
+        }
+        return learningNorm;
+    }
+
+    private OptimalClusterUpdatePosition getOptimalClusterUpdatePosition(int updateRadius, int clusterNeuronsCount){
+        OptimalClusterUpdatePosition optimalClusterUpdatePosition = new OptimalClusterUpdatePosition(updateRadius, (clusterNeuronsCount - 1) - updateRadius);
+        return optimalClusterUpdatePosition;
+    }
+
+    private int getClusterWinnerIndex(int clusterNeuronCount, ClusterNeuron[] clusters){
+        double[] euclideanDistancesArray = new double[clusterNeuronCount];
+        double minimalEuclideanDistance = (double)Integer.MAX_VALUE;
+        int clusterWinnerIndex = 0;
+        for(int i = 0; i < euclideanDistancesArray.length; ++i){
+            euclideanDistancesArray[i] = clusters[i].getOutputSignal();
+            if(euclideanDistancesArray[i] < minimalEuclideanDistance){
+                minimalEuclideanDistance = euclideanDistancesArray[i];
+                clusterWinnerIndex = i;
+            }
+        }
+        return clusterWinnerIndex;
+    }
+
+    private void updateClustersInputEdgesWeight(int indexClusterToUpdate, double learningNorm){
+        // TODO: make weight updating mechanism
+    }
+
+// #MARK - Learning Additional class
+
+    private class OptimalClusterUpdatePosition {
+
+    // #MARK - Properties
+        private int start;
+        private int end;
+
+    // #MARK - Constructors
+
+        OptimalClusterUpdatePosition(){
+            this.start = 0;
+            this.end = 0;
+        }
+
+        OptimalClusterUpdatePosition(int start, int end){
+            this.start = start;
+            this.end = end;
+        }
+
+    // MARK - Custom Methods
+
+        public int getStart(){
+            return this.start;
+        }
+
+        public int getEnd(){
+            return this.end;
+        }
+
+    }
 
 }
