@@ -66,7 +66,7 @@ public class KohonenNetworkLearningBuilder {
         return this.learningNormTo;
     }
 
-    public double getDefaultLearningNormDecrementStepValue(){
+    public double getLearningNormDecrementStepValue(){
         return this.learningNormDecrementStepValue;
     }
 

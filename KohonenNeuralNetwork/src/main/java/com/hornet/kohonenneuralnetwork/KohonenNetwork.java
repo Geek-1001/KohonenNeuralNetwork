@@ -135,66 +135,37 @@ public class KohonenNetwork {
         }
     }
 
-// #MARK - Learning Methods
+// #MARK - Learning Methods // TODO: test all learning process
+    // TODO: all globals variables set as parameters to methods instead of using in global scope
 
     public void startLearning(KohonenNetworkLearningBuilder learningBuilder){
+        int updateRadius = learningBuilder.getUpdateRadius();
+        double learningNorm = learningBuilder.getLearningNormFrom();
 
         for(int i = 0; i < learningBuilder.getLearningEraCount(); ++i){
-
-
-
+            learn(learningBuilder.getLearningVectors(), updateRadius, learningNorm);
+            updateRadius = getUpdatedRadius(updateRadius);
+            learningNorm = getUpdatedLearningNorm(learningNorm, learningBuilder.getLearningNormTo(), learningBuilder.getLearningNormDecrementStepValue());
         }
+
+        // TODO: save all edges weight to file for restoring this values in building process
 
     }
 
     private void learn(List<double[]> learningVectorsList, int updateRadius, double learningNorm){
-
         Iterator<double[]> learningVectorsIterator = learningVectorsList.iterator();
-
         while(learningVectorsIterator.hasNext()){
-
             double[] currentLearningVector = learningVectorsIterator.next();
             setInputSignal(currentLearningVector);
 
             int clusterWinnerIndex = getClusterWinnerIndex(this.clusters.length, this.clusters);
-            updateClustersInputEdgesWeight(clusterWinnerIndex, learningNorm);
-
+            updateClustersInputEdgesWeight(clusterWinnerIndex, learningNorm, currentLearningVector);
             OptimalClusterUpdatePosition optimalClusterUpdatePosition = getOptimalClusterUpdatePosition(updateRadius, this.clusters.length);
-
-            // TODO: make separate method for update clusters near cluster winner. Rewrite this part
-            for(int i = 1; i != updateRadius; ++i){
-
-                int currentUpdateIndexIncrement = clusterWinnerIndex + i;
-                int currentUpdateIndexDecrement = clusterWinnerIndex - i;
-
-                if(currentUpdateIndexIncrement >= optimalClusterUpdatePosition.getStart() && currentUpdateIndexIncrement <= optimalClusterUpdatePosition.getEnd()){
-                    updateClustersInputEdgesWeight(currentUpdateIndexIncrement, learningNorm);
-                } else {
-                    if(currentUpdateIndexIncrement < this.clusters.length){
-                        updateClustersInputEdgesWeight(currentUpdateIndexIncrement, learningNorm);
-                    }
-                }
-
-                if(currentUpdateIndexDecrement >= optimalClusterUpdatePosition.getStart() && currentUpdateIndexDecrement <= optimalClusterUpdatePosition.getEnd()){
-                    updateClustersInputEdgesWeight(currentUpdateIndexDecrement, learningNorm);
-                } else {
-                    if(currentUpdateIndexDecrement >= 0){
-                        updateClustersInputEdgesWeight(currentUpdateIndexDecrement, learningNorm);
-                    }
-                }
-
-
-            }
-
-
-
-
+            updateClustersNearWinnerInputEdgesWeight(currentLearningVector, updateRadius, learningNorm, clusterWinnerIndex, this.clusters.length, optimalClusterUpdatePosition);
         }
-
-
     }
 
-    private int getUpdatedLearningRadius(int currentRadius){
+    private int getUpdatedRadius(int currentRadius){
         int radius = currentRadius;
         if(currentRadius != 0){
             radius--;
@@ -229,8 +200,39 @@ public class KohonenNetwork {
         return clusterWinnerIndex;
     }
 
-    private void updateClustersInputEdgesWeight(int indexClusterToUpdate, double learningNorm){
-        // TODO: make weight updating mechanism
+    private void updateClustersInputEdgesWeight(int indexClusterToUpdate, double learningNorm, double[] currentInputSignal){
+        Edge[] edgesToUpdate = this.inputEdges.get(indexClusterToUpdate);
+        for(int i = 0; i < edgesToUpdate.length; ++i){
+            Edge edge = edgesToUpdate[i];
+            double signal = currentInputSignal[i];
+            double updatedWeight = edge.getWeight() + learningNorm * (signal - edge.getWeight());
+            edge.setWeight(updatedWeight);
+        }
+    }
+
+    // TODO: make this method more elegant !!!
+    private void updateClustersNearWinnerInputEdgesWeight(double[] currentInputSignal, int updateRadius, double learningNorm, int clusterWinnerIndex, int clusterNeuronCount, OptimalClusterUpdatePosition optimalClusterUpdatePosition){
+        for(int i = 1; i != updateRadius; ++i){
+
+            int currentUpdateIndexIncrement = clusterWinnerIndex + i;
+            int currentUpdateIndexDecrement = clusterWinnerIndex - i;
+
+            if(optimalClusterUpdatePosition.isPositionOptimal(currentUpdateIndexIncrement)){
+                updateClustersInputEdgesWeight(currentUpdateIndexIncrement, learningNorm, currentInputSignal);
+            } else {
+                if(currentUpdateIndexIncrement < clusterNeuronCount){
+                    updateClustersInputEdgesWeight(currentUpdateIndexIncrement, learningNorm, currentInputSignal);
+                }
+            }
+
+            if(optimalClusterUpdatePosition.isPositionOptimal(currentUpdateIndexDecrement)){
+                updateClustersInputEdgesWeight(currentUpdateIndexDecrement, learningNorm, currentInputSignal);
+            } else {
+                if(currentUpdateIndexDecrement >= 0){
+                    updateClustersInputEdgesWeight(currentUpdateIndexDecrement, learningNorm, currentInputSignal);
+                }
+            }
+        }
     }
 
 // #MARK - Learning Additional class
@@ -261,6 +263,13 @@ public class KohonenNetwork {
 
         public int getEnd(){
             return this.end;
+        }
+
+        public boolean isPositionOptimal(int clusterPosition){
+            if(clusterPosition >= this.start && clusterPosition <= this.end){
+                return true;
+            }
+            return false;
         }
 
     }
