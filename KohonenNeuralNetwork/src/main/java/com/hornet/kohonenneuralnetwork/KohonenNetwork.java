@@ -18,10 +18,6 @@ public class KohonenNetwork {
     private Edge[] outputEdges;
     private ClusterNeuron[] clusters;
 
-    // TODO: create learning process
-    private boolean isLearned = false;
-
-
 // #MARK - Constructors
 
     KohonenNetwork(){
@@ -90,7 +86,13 @@ public class KohonenNetwork {
         }
 
         List<double[]> edgesWeightList = networkBuilder.getEdgesWeightList();
-        if(networkBuilder.isRandomEdgesWeight()){
+
+        if(isLearned()){
+            edgesWeightList = getRestoredInputEdgesWeightList();
+        }
+
+        if(networkBuilder.isRandomEdgesWeight() && edgesWeightList == null){
+            // TODO: make for this separate method; generateRandomInputEdgesWeight()
             edgesWeightList = new ArrayList<double[]>(networkBuilder.getInputsNumber());
             Random random = new Random();
             for(int i = 0; i < edgesWeightList.size(); ++i){
@@ -101,6 +103,7 @@ public class KohonenNetwork {
                 edgesWeightList.add(edgesWeight);
             }
         }
+
         buildInputEdges(networkBuilder.getInputsNumber(), networkBuilder.getClustersNumber(), edgesWeightList);
         buildOutputEdges(networkBuilder.getClustersNumber());
         buildClusterNeurons(networkBuilder.getClustersNumber());
@@ -149,6 +152,8 @@ public class KohonenNetwork {
         }
 
         // TODO: save all edges weight to file for restoring this values in building process
+        List<double[]> inputEdgesWeightList = getCurrentInputEdgesWeightList(this.inputEdges);
+        saveNewInputEdgesWeight(inputEdgesWeightList);
 
     }
 
@@ -235,6 +240,37 @@ public class KohonenNetwork {
         }
     }
 
+    private List<double[]> getCurrentInputEdgesWeightList(List<Edge[]> inputEdgesList){
+        List<double[]> inputEdgesWeightList = new ArrayList<double[]>(inputEdgesList.size());
+        Iterator<Edge[]> inputEdgesIterator = inputEdgesList.iterator();
+
+        while(inputEdgesIterator.hasNext()){
+            Edge[] edges = inputEdgesIterator.next();
+            double[] weight = new double[edges.length];
+
+            for(int i = 0; i < edges.length; ++i){
+                weight[i] = edges[i].getWeight();
+            }
+            inputEdgesWeightList.add(weight);
+        }
+        return inputEdgesWeightList;
+    }
+
+    private void saveNewInputEdgesWeight(List<double[]> inputEdgesWeightlist){
+        // TODO: finish this method
+    }
+
+    private List<double[]> getRestoredInputEdgesWeightList(){
+        // TODO: finish this method
+        return null;
+    }
+
+    private boolean isLearned(){
+        // TODO: finish this method
+        // TODO: check if file with data exists -> check if number of line is equals to number of clusters -> check if number of item in line is equals to input number
+        return false;
+    }
+
 // #MARK - Learning Additional class
 
     private class OptimalClusterUpdatePosition {
@@ -256,14 +292,6 @@ public class KohonenNetwork {
         }
 
     // MARK - Custom Methods
-
-        public int getStart(){
-            return this.start;
-        }
-
-        public int getEnd(){
-            return this.end;
-        }
 
         public boolean isPositionOptimal(int clusterPosition){
             if(clusterPosition >= this.start && clusterPosition <= this.end){
