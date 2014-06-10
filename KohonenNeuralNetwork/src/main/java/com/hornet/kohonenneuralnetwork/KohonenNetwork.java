@@ -91,6 +91,7 @@ public class KohonenNetwork {
             edgesWeightList = getRestoredInputEdgesWeightList();
         }
 
+        /*
         if(networkBuilder.isRandomEdgesWeight() && edgesWeightList == null){
             // TODO: make for this separate method; generateRandomInputEdgesWeight()
             edgesWeightList = new ArrayList<double[]>(networkBuilder.getInputsNumber());
@@ -103,6 +104,7 @@ public class KohonenNetwork {
                 edgesWeightList.add(edgesWeight);
             }
         }
+        */
 
         buildInputEdges(networkBuilder.getInputsNumber(), networkBuilder.getClustersNumber(), edgesWeightList);
         buildOutputEdges(networkBuilder.getClustersNumber());

@@ -1,6 +1,8 @@
 package com.hornet.kohonenneuralnetwork;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Ahmed on 5/17/14.
@@ -9,12 +11,8 @@ public class KohonenNetworkBuilder {
 
 // #MARK - Constants
 
-    //public static final int
     private int clustersNumber;
     private int inputsNumber;
-    private boolean isRandomEdgesWeight;
-
-    //private double[] edgesWeightArray;
     private List<double[]> edgesWeightList;
 
 // #MARK - Constructors
@@ -30,17 +28,10 @@ public class KohonenNetworkBuilder {
     private void init(int clustersNumber, int inputsNumber){
         this.clustersNumber = clustersNumber;
         this.inputsNumber = inputsNumber;
-        this.isRandomEdgesWeight = true;
         this.edgesWeightList = null;
     }
 
 // #MARK - Custom Methods
-
-    // #MARK - Setters
-
-    public void setRandomEdgesWeight(boolean state){
-        this.isRandomEdgesWeight = state;
-    }
 
     public void setClustersNumber(int clustersNumber){
         this.clustersNumber = clustersNumber;
@@ -54,7 +45,9 @@ public class KohonenNetworkBuilder {
         this.edgesWeightList = weight;
     }
 
-    // #MARK - Getters
+    public void setEdgesWeightList(){
+        this.edgesWeightList = getRandomInputEdgesWeight(this.inputsNumber, this.clustersNumber);
+    }
 
     public List<double[]> getEdgesWeightList(){
         return this.edgesWeightList;
@@ -68,8 +61,18 @@ public class KohonenNetworkBuilder {
         return this.clustersNumber;
     }
 
-    public boolean isRandomEdgesWeight(){
-        return this.isRandomEdgesWeight;
+    private List<double[]> getRandomInputEdgesWeight(int inputsNumber, int clustersNumber){
+        List<double[]> edgesWeightList = new ArrayList<double[]>(inputsNumber);
+        Random random = new Random();
+        for(int i = 0; i < edgesWeightList.size(); ++i){
+            double[] edgesWeight = new double[clustersNumber];
+            for(int j = 0; j < edgesWeight.length; ++j){
+                edgesWeight[j] = random.nextDouble();
+            }
+            edgesWeightList.add(edgesWeight);
+        }
+        return edgesWeightList;
     }
+
 
 }
