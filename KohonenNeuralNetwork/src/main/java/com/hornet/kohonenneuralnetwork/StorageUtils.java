@@ -2,6 +2,7 @@ package com.hornet.kohonenneuralnetwork;
 
 import android.content.Context;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -58,7 +59,13 @@ public class StorageUtils {
         return inputEdgesWeightList;
     }
 
-    public static boolean isRememberedClusterCountCorrect(int clusterNeuronCount) throws IOException {
+    // TODO: rename this method
+    public static boolean isFileExists(Context context){
+        File file = new File(context.getFilesDir(), FILENAME);
+        return file.exists();
+    }
+
+    public static boolean isRememberedClusterCountCorrect(int clusterNeuronCount){
         List<double[]> inputEdgesWeightList = getInputEdgesWeightFromFile();
         if(inputEdgesWeightList.size() == clusterNeuronCount){
             return true;
@@ -66,7 +73,7 @@ public class StorageUtils {
         return false;
     }
 
-    public static boolean isRememberedInputCountCorrect(int inputEdgesCount) throws IOException{
+    public static boolean isRememberedInputCountCorrect(int inputEdgesCount){
         List<double[]> inputEdgesWeightList = getInputEdgesWeightFromFile();
         boolean state = false;
         for(double[] weight : inputEdgesWeightList){

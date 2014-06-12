@@ -1,5 +1,8 @@
 package com.hornet.kohonenneuralnetwork;
 
+import android.content.Context;
+
+import java.io.IOException;
 import java.io.OptionalDataException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,14 +21,16 @@ public class KohonenNetwork {
     private Edge[] outputEdges;
     private ClusterNeuron[] clusters;
 
+    private Context context;
+
 // #MARK - Constructors
 
-    KohonenNetwork(){
-        buildNetwork(null);
+    KohonenNetwork(Context context){
+        buildNetwork(context, null);
     }
 
-    KohonenNetwork(KohonenNetworkBuilder networkBuilder){
-        buildNetwork(networkBuilder);
+    KohonenNetwork(Context context, KohonenNetworkBuilder networkBuilder){
+        buildNetwork(context, networkBuilder);
     }
 
 // #MARK - Custom Methods
@@ -74,20 +79,23 @@ public class KohonenNetwork {
 
 // #MARK - Network Building Methods
 
-    private void buildNetwork(KohonenNetworkBuilder networkBuilder){
+    private void buildNetwork(Context context, KohonenNetworkBuilder networkBuilder){
         // TODO: rewrite with edges weight remember. With learning process.
         // TODO: Get remembered value of weight from this method
 
-        if(networkBuilder == null){
+        if(networkBuilder == null || context == null){
             this.inputEdges = null;
             this.clusters = null;
             this.outputEdges = null;
+            this.context = null;
             return;
         }
 
+        this.context = context;
+
         List<double[]> edgesWeightList = networkBuilder.getEdgesWeightList();
 
-        if(isLearned()){
+        if(isLearned(context, networkBuilder.getClustersNumber(), networkBuilder.getInputsNumber())){
             edgesWeightList = getRestoredInputEdgesWeightList();
         }
 
@@ -259,17 +267,26 @@ public class KohonenNetwork {
     }
 
     private void saveNewInputEdgesWeight(List<double[]> inputEdgesWeightlist){
-        // TODO: finish this method
+        try {
+            StorageUtils.writeInputEdgesWeightToFile(this.context, inputEdgesWeightlist);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private List<double[]> getRestoredInputEdgesWeightList(){
-        // TODO: finish this method
-        return null;
+        return StorageUtils.getInputEdgesWeightFromFile();
     }
 
-    private boolean isLearned(){
+    private boolean isLearned(Context context, int currentNeuronClusterCount, int currentInputEdgesCount){
         // TODO: finish this method
         // TODO: check if file with data exists -> check if number of line is equals to number of clusters -> check if number of item in line is equals to input number
+
+        if(StorageUtils.isFileExists(context)){
+            if(StorageUtils.isRememberedClusterCountCorrect(currentNeuronClusterCount) && StorageUtils.isRememberedInputCountCorrect(currentInputEdgesCount)){
+               return true;
+            }
+        }
         return false;
     }
 
