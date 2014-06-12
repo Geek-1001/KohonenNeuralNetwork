@@ -3,6 +3,7 @@ package com.hornet.kohonenneuralnetwork;
 import android.content.Context;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -35,32 +36,38 @@ public class StorageUtils {
         }
     }
 
-    public static List<double[]> getInputEdgesWeightFromFile(Context context) throws IOException {
+    public static List<double[]> getInputEdgesWeightFromFile() {
         List<double[]> inputEdgesWeightList = new ArrayList<double[]>();
-        FileInputStream fileInputStream = new FileInputStream(FILENAME);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-        String line;
-        while((line = bufferedReader.readLine()) != null) {
-            String[] lineArray = line.split(" ");
-            double[] weightArray = new double[lineArray.length];
-            for(int i = 0; i < lineArray.length; ++i){
-                weightArray[i] = Double.parseDouble(lineArray[i]);
+        try{
+            FileInputStream fileInputStream = new FileInputStream(FILENAME);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+            String line;
+            while((line = bufferedReader.readLine()) != null) {
+                String[] lineArray = line.split(" ");
+                double[] weightArray = new double[lineArray.length];
+                for(int i = 0; i < lineArray.length; ++i){
+                    weightArray[i] = Double.parseDouble(lineArray[i]);
+                }
+                inputEdgesWeightList.add(weightArray);
             }
-            inputEdgesWeightList.add(weightArray);
+        }catch(FileNotFoundException exception){
+            return null;
+        }catch(IOException exception){
+            exception.printStackTrace();
         }
         return inputEdgesWeightList;
     }
 
-    public static boolean isRememberedClusterCountCorrect(Context context, int clusterNeuronCount) throws IOException {
-        List<double[]> inputEdgesWeightList = getInputEdgesWeightFromFile(context);
+    public static boolean isRememberedClusterCountCorrect(int clusterNeuronCount) throws IOException {
+        List<double[]> inputEdgesWeightList = getInputEdgesWeightFromFile();
         if(inputEdgesWeightList.size() == clusterNeuronCount){
             return true;
         }
         return false;
     }
 
-    public static boolean isRememberedInputCountCorrect(Context context, int inputEdgesCount) throws IOException{
-        List<double[]> inputEdgesWeightList = getInputEdgesWeightFromFile(context);
+    public static boolean isRememberedInputCountCorrect(int inputEdgesCount) throws IOException{
+        List<double[]> inputEdgesWeightList = getInputEdgesWeightFromFile();
         boolean state = false;
         for(double[] weight : inputEdgesWeightList){
             state = false;
