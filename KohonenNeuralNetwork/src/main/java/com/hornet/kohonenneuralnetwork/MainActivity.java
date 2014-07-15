@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,48 +19,48 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
+        int clusterNumber = 5;
+        int inputNumber = 3;
+        KohonenNetworkBuilder networkBuilder = new KohonenNetworkBuilder(clusterNumber, inputNumber);
+        networkBuilder.setEdgesWeightList();
+
+
+        Log.d("TAG", "Learning Vector");
+        for(double[] learningVector : networkBuilder.getEdgesWeightList()){
+            for(int i = 0; i < learningVector.length; ++i){
+                Log.d("TAG", " | " + learningVector[i]);
+            }
+            Log.d("TAG", "\n");
+            Log.d("TAG", "\n");
         }
+
+
+        double[] inputSignal = new double[]{4, 3, 2};
+        KohonenNetwork network = new KohonenNetwork(this, networkBuilder);
+        network.setInputSignal(inputSignal);
+        double[] outputSignal = network.getOutputSignal();
+
+
+        for(int i = 0; i < outputSignal.length; ++i){
+            Log.d("TAG", " | " + outputSignal[i]);
+        }
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
     }
 
 }

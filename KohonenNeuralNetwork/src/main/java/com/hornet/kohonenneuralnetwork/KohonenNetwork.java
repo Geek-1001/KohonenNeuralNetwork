@@ -36,17 +36,25 @@ public class KohonenNetwork {
 // #MARK - Custom Methods
 
     public void setInputSignal(double[] inputSignal){
-        if(inputSignal.length != this.inputEdges.size()){
+//        if(inputSignal.length != this.inputEdges.size()){
+        if(inputSignal.length != this.inputEdges.get(0).length) {
             throw new IllegalArgumentException("Input signal length should be equal to input edges count");
         }
-        int inputSignalIndex = 0;
+
+//        int inputSignalIndex = 0;
         Iterator<Edge[]> inputEdgesIterator = inputEdges.iterator();
+
         while(inputEdgesIterator.hasNext()){
             Edge[] edges = inputEdgesIterator.next();
-            for(Edge edge : edges){
-                edge.setSignal(inputSignal[inputSignalIndex]);
+//            for(Edge edge : edges){
+//                edge.setSignal(inputSignal[inputSignalIndex]);
+//            }
+
+            for(int i = 0; i < edges.length; i++) {
+                Edge edge = edges[i];
+                edge.setSignal(inputSignal[i]);
             }
-            inputSignalIndex++;
+//            inputSignalIndex++;
         }
 
     }
@@ -120,14 +128,20 @@ public class KohonenNetwork {
     }
 
     private void buildInputEdges(int inputsCount, int clusterNeuronsCount, List<double[]> edgesWeightList) {
-        this.inputEdges = new ArrayList<Edge[]>(inputsCount);
-        for(int i = 0; i < this.inputEdges.size(); ++i){
+        this.inputEdges = new ArrayList<Edge[]>(clusterNeuronsCount);
+
+        for(int i = 0; i < clusterNeuronsCount; ++i) {
+
             double[] currentWeightArray = edgesWeightList.get(i);
-            Edge[] edges = new Edge[clusterNeuronsCount];
+            Edge[] edges = new Edge[inputsCount];
+
             for(int j = 0; j < edges.length; ++j){
+
                 Edge inputEdge = new Edge(currentWeightArray[j], 0);
                 edges[j] = inputEdge;
+
             }
+
             this.inputEdges.add(edges);
         }
     }
@@ -161,7 +175,6 @@ public class KohonenNetwork {
             learningNorm = getUpdatedLearningNorm(learningNorm, learningBuilder.getLearningNormTo(), learningBuilder.getLearningNormDecrementStepValue());
         }
 
-        // TODO: save all edges weight to file for restoring this values in building process
         List<double[]> inputEdgesWeightList = getCurrentInputEdgesWeightList(this.inputEdges);
         saveNewInputEdgesWeight(inputEdgesWeightList);
 
@@ -279,9 +292,6 @@ public class KohonenNetwork {
     }
 
     private boolean isLearned(Context context, int currentNeuronClusterCount, int currentInputEdgesCount){
-        // TODO: finish this method
-        // TODO: check if file with data exists -> check if number of line is equals to number of clusters -> check if number of item in line is equals to input number
-
         if(StorageUtils.isFileExists(context)){
             if(StorageUtils.isRememberedClusterCountCorrect(currentNeuronClusterCount) && StorageUtils.isRememberedInputCountCorrect(currentInputEdgesCount)){
                return true;

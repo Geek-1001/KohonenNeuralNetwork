@@ -62,10 +62,10 @@ public class KohonenNetworkBuilder {
     }
 
     private List<double[]> getRandomInputEdgesWeight(int inputsNumber, int clustersNumber){
-        List<double[]> edgesWeightList = new ArrayList<double[]>(inputsNumber);
+        List<double[]> edgesWeightList = new ArrayList<double[]>(clustersNumber);
         Random random = new Random();
-        for(int i = 0; i < edgesWeightList.size(); ++i){
-            double[] edgesWeight = new double[clustersNumber];
+        for(int i = 0; i < clustersNumber; ++i){
+            double[] edgesWeight = new double[inputsNumber];
             for(int j = 0; j < edgesWeight.length; ++j){
                 edgesWeight[j] = random.nextDouble();
             }
