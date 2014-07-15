@@ -10,21 +10,63 @@
     tools:ignore="MergeRootFrame" >
 
     <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|left"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        android:id="@+id/input_1"/>
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        android:id="@+id/input_2"/>
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        android:id="@+id/input_3"/>
+
+    <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:hint="Input Signal separate by space"
-
-
+        android:layout_gravity="top|center"
+        android:layout_marginTop="170dp"
+        android:text="Work"
+        android:onClick="onClick"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="10dp"
         android:textColor="@android:color/holo_green_dark"
         android:textSize="18sp"
-        android:text="Kohonen Network Work In Progress"/>
+        android:text="Kohonen Network Work In Progress"
+        android:id="@+id/output"/>
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp">
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:textColor="@android:color/holo_green_dark"
+            android:id="@+id/logOutput"/>
+
+    </ScrollView>
 
 </FrameLayout>

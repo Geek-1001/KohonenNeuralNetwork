@@ -11,8 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Date;
 
 public class MainActivity extends Activity {
+
+    KohonenNetwork network;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,29 +30,39 @@ public class MainActivity extends Activity {
         KohonenNetworkBuilder networkBuilder = new KohonenNetworkBuilder(clusterNumber, inputNumber);
         networkBuilder.setEdgesWeightList();
 
-
-        Log.d("TAG", "Learning Vector");
-        for(double[] learningVector : networkBuilder.getEdgesWeightList()){
-            for(int i = 0; i < learningVector.length; ++i){
-                Log.d("TAG", " | " + learningVector[i]);
+        TextView log = (TextView) findViewById(R.id.logOutput);
+        log.setText("");
+        for(double[] items : networkBuilder.getEdgesWeightList()){
+            log.append("ITEM : \n");
+            for(double value : items){
+                log.append(value + "\n");
             }
-            Log.d("TAG", "\n");
-            Log.d("TAG", "\n");
+            log.append("\n\n");
         }
 
-
-        double[] inputSignal = new double[]{4, 3, 2};
-        KohonenNetwork network = new KohonenNetwork(this, networkBuilder);
-        network.setInputSignal(inputSignal);
-        double[] outputSignal = network.getOutputSignal();
-
-
-        for(int i = 0; i < outputSignal.length; ++i){
-            Log.d("TAG", " | " + outputSignal[i]);
-        }
+        network = new KohonenNetwork(this, networkBuilder);
 
     }
 
+    public void onClick(View view) {
+
+        EditText input_first = (EditText) findViewById(R.id.input_1);
+        EditText input_second = (EditText) findViewById(R.id.input_2);
+        EditText input_third = (EditText) findViewById(R.id.input_3);
+        TextView output = (TextView) findViewById(R.id.output);
+
+        double[] inputSignal = new double[]{Double.parseDouble(input_first.getText().toString()), Double.parseDouble(input_second.getText().toString()), Double.parseDouble(input_third.getText().toString()) };
+
+        network.setInputSignal(inputSignal);
+
+        double[] outputSignal = network.getOutputSignal();
+
+        output.setText("");
+        for(double value : outputSignal){
+            output.append(" " + value);
+        }
+        output.append("\n\n" + System.currentTimeMillis());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

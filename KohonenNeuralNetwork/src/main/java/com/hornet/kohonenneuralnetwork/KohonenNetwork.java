@@ -36,25 +36,17 @@ public class KohonenNetwork {
 // #MARK - Custom Methods
 
     public void setInputSignal(double[] inputSignal){
-//        if(inputSignal.length != this.inputEdges.size()){
         if(inputSignal.length != this.inputEdges.get(0).length) {
             throw new IllegalArgumentException("Input signal length should be equal to input edges count");
         }
 
-//        int inputSignalIndex = 0;
         Iterator<Edge[]> inputEdgesIterator = inputEdges.iterator();
-
         while(inputEdgesIterator.hasNext()){
             Edge[] edges = inputEdgesIterator.next();
-//            for(Edge edge : edges){
-//                edge.setSignal(inputSignal[inputSignalIndex]);
-//            }
-
             for(int i = 0; i < edges.length; i++) {
                 Edge edge = edges[i];
                 edge.setSignal(inputSignal[i]);
             }
-//            inputSignalIndex++;
         }
 
     }
