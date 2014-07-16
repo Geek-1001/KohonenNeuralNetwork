@@ -14,7 +14,9 @@ import android.os.Build;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -28,7 +30,18 @@ public class MainActivity extends Activity {
         int clusterNumber = 5;
         int inputNumber = 3;
         KohonenNetworkBuilder networkBuilder = new KohonenNetworkBuilder(clusterNumber, inputNumber);
-        networkBuilder.setEdgesWeightList();
+
+
+        List<double[]> weights = new ArrayList<double[]>();
+        weights.add(new double[]{20, 8, 1});
+        weights.add(new double[]{2, 1, 1});
+        weights.add(new double[]{5, 8, 20});
+        weights.add(new double[]{0, 20, 1});
+        weights.add(new double[]{20, 10, 20});
+
+        networkBuilder.setEdgesWeightList(weights);
+//        networkBuilder.setEdgesWeightList();
+
 
         TextView log = (TextView) findViewById(R.id.logOutput);
         log.setText("");
@@ -59,7 +72,7 @@ public class MainActivity extends Activity {
 
         output.setText("");
         for(double value : outputSignal){
-            output.append(" " + value);
+            output.append(" - " + value);
         }
         output.append("\n\n" + System.currentTimeMillis());
     }
