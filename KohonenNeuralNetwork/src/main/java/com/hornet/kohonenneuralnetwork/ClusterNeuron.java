@@ -51,6 +51,7 @@ public class ClusterNeuron extends Neuron {
      */
     @Override
     public double getOutputSignal(){
+        this.currentSignal = this.getInputSignal(this.inputEdges);
         return getEuclideanDistance(this.currentSignal);
     }
 

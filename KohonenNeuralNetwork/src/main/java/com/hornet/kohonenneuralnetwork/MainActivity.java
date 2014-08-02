@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends Activity {
 
@@ -72,9 +73,31 @@ public class MainActivity extends Activity {
 
         output.setText("");
         for(double value : outputSignal){
-            output.append(" - " + value);
+            output.append(" | " + value);
         }
         output.append("\n\n" + System.currentTimeMillis());
+    }
+
+    public void onLearn(View view) {
+
+        KohonenNetworkLearningBuilder learningBuilder = new KohonenNetworkLearningBuilder();
+        learningBuilder.setLearningEraCount(2);
+        learningBuilder.setLearningNorm(0.8, 0.1, 0.1);
+        learningBuilder.setUpdateRadius(5);
+
+        List<double[]> learningVectors = new ArrayList<double[]>();
+        Random random = new Random();
+        for(int i = 0; i < 100; i++) {
+            double[] currentLearningVector = new double[3];
+            for(int j = 0; j < currentLearningVector.length; ++j) {
+                currentLearningVector[j] = (double) random.nextInt(500);
+            }
+            learningVectors.add(currentLearningVector);
+        }
+        learningBuilder.setLearningVectors(learningVectors);
+
+        network.startLearning(learningBuilder);
+
     }
 
     @Override

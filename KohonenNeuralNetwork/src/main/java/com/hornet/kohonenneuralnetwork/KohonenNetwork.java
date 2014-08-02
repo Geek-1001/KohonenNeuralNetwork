@@ -1,6 +1,7 @@
 package com.hornet.kohonenneuralnetwork;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.OptionalDataException;
@@ -165,6 +166,8 @@ public class KohonenNetwork {
             learn(learningBuilder.getLearningVectors(), updateRadius, learningNorm);
             updateRadius = getUpdatedRadius(updateRadius);
             learningNorm = getUpdatedLearningNorm(learningNorm, learningBuilder.getLearningNormTo(), learningBuilder.getLearningNormDecrementStepValue());
+
+            Log.d("TAG", "--------------------------ERA-----------------------");
         }
 
         List<double[]> inputEdgesWeightList = getCurrentInputEdgesWeightList(this.inputEdges);
@@ -176,12 +179,19 @@ public class KohonenNetwork {
         Iterator<double[]> learningVectorsIterator = learningVectorsList.iterator();
         while(learningVectorsIterator.hasNext()){
             double[] currentLearningVector = learningVectorsIterator.next();
+
+            Log.d("TAG", "Learning : current learning vector - " + currentLearningVector[0] + " " + currentLearningVector[1] + " " + currentLearningVector[2]);
+
             setInputSignal(currentLearningVector);
 
             int clusterWinnerIndex = getClusterWinnerIndex(this.clusters.length, this.clusters);
+
+            Log.d("TAG", "Learning : cluster winner " + clusterWinnerIndex);
+
             updateClustersInputEdgesWeight(clusterWinnerIndex, learningNorm, currentLearningVector);
             OptimalClusterUpdatePosition optimalClusterUpdatePosition = getOptimalClusterUpdatePosition(updateRadius, this.clusters.length);
             updateClustersNearWinnerInputEdgesWeight(currentLearningVector, updateRadius, learningNorm, clusterWinnerIndex, this.clusters.length, optimalClusterUpdatePosition);
+
         }
     }
 
@@ -231,12 +241,14 @@ public class KohonenNetwork {
     }
 
     // TODO: make this method more elegant !!!
-    private void updateClustersNearWinnerInputEdgesWeight(double[] currentInputSignal, int updateRadius, double learningNorm, int clusterWinnerIndex, int clusterNeuronCount, OptimalClusterUpdatePosition optimalClusterUpdatePosition){
-        for(int i = 1; i != updateRadius; ++i){
+    private void updateClustersNearWinnerInputEdgesWeight(double[] currentInputSignal, int updateRadius, double learningNorm, int clusterWinnerIndex, int clusterNeuronCount, OptimalClusterUpdatePosition optimalClusterUpdatePosition) {
+        if(updateRadius == 0) {
+            return;
+        }
 
+        for(int i = 1; i != updateRadius; ++i){
             int currentUpdateIndexIncrement = clusterWinnerIndex + i;
             int currentUpdateIndexDecrement = clusterWinnerIndex - i;
-
             if(optimalClusterUpdatePosition.isPositionOptimal(currentUpdateIndexIncrement)){
                 updateClustersInputEdgesWeight(currentUpdateIndexIncrement, learningNorm, currentInputSignal);
             } else {
@@ -244,7 +256,6 @@ public class KohonenNetwork {
                     updateClustersInputEdgesWeight(currentUpdateIndexIncrement, learningNorm, currentInputSignal);
                 }
             }
-
             if(optimalClusterUpdatePosition.isPositionOptimal(currentUpdateIndexDecrement)){
                 updateClustersInputEdgesWeight(currentUpdateIndexDecrement, learningNorm, currentInputSignal);
             } else {
@@ -280,12 +291,12 @@ public class KohonenNetwork {
     }
 
     private List<double[]> getRestoredInputEdgesWeightList(){
-        return StorageUtils.getInputEdgesWeightFromFile();
+        return StorageUtils.getInputEdgesWeightFromFile(this.context);
     }
 
     private boolean isLearned(Context context, int currentNeuronClusterCount, int currentInputEdgesCount){
         if(StorageUtils.isFileExists(context)){
-            if(StorageUtils.isRememberedClusterCountCorrect(currentNeuronClusterCount) && StorageUtils.isRememberedInputCountCorrect(currentInputEdgesCount)){
+            if(StorageUtils.isRememberedClusterCountCorrect(currentNeuronClusterCount, this.context) && StorageUtils.isRememberedInputCountCorrect(currentInputEdgesCount, this.context)){
                return true;
             }
         }

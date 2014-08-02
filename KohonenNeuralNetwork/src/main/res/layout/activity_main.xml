@@ -44,6 +44,15 @@
         android:text="Work"
         android:onClick="onClick"/>
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="220dp"
+        android:text="Learn"
+        android:onClick="onLearn"/>
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,9 +65,10 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="250dp"
+        android:layout_height="210dp"
         android:layout_gravity="center"
-        android:layout_marginTop="120dp">
+        android:layout_marginTop="140dp"
+        android:background="#ff1b1b1b">
 
         <TextView
             android:layout_width="fill_parent"
