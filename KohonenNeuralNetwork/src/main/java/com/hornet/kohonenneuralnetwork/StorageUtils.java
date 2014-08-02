@@ -25,26 +25,6 @@ public class StorageUtils {
 
     private static final String FILENAME = "inputEdgesWeight.txt";
 
-//    public static void writeInputEdgesWeightToFile(Context context, List<double[]> inputEdgesWeightList) throws IOException {
-//        String lineSeparator = System.getProperty("line.separator");
-//        OutputStreamWriter outputStreamWriter = null;
-//        try {
-//            outputStreamWriter = new OutputStreamWriter(context.openFileOutput(FILENAME, Context.MODE_PRIVATE));
-//            outputStreamWriter = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-//            outputStreamWriter.write("");
-//
-//            for(double[] weight : inputEdgesWeightList){
-//                for(int i = 0; i < weight.length; ++i){
-//                    outputStreamWriter.append(weight[i] + " ");
-//                }
-//                outputStreamWriter.append(lineSeparator);
-//            }
-//        } finally {
-//            outputStreamWriter.flush();
-//            outputStreamWriter.close();
-//        }
-//    }
-
     public static void writeInputEdgesWeightToFile(Context context, List<double[]> inputEdgesWeightList) throws IOException {
         String lineSeparator = System.getProperty("line.separator");
         FileOutputStream outputStream = null;
@@ -70,7 +50,6 @@ public class StorageUtils {
         }
     }
 
-    // TODO: fix reading bug!!!
     public static List<double[]> getInputEdgesWeightFromFile(Context context) {
         List<double[]> inputEdgesWeightList = new ArrayList<double[]>();
         try{
