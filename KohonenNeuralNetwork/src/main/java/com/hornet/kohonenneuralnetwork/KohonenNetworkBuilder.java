@@ -17,11 +17,11 @@ public class KohonenNetworkBuilder {
 
 // #MARK - Constructors
 
-    KohonenNetworkBuilder(){
+    public KohonenNetworkBuilder(){
         init(0, 0);
     }
 
-    KohonenNetworkBuilder(int clustersNumber, int inputsNumber){
+    public KohonenNetworkBuilder(int clustersNumber, int inputsNumber){
         init(clustersNumber, inputsNumber);
     }
 

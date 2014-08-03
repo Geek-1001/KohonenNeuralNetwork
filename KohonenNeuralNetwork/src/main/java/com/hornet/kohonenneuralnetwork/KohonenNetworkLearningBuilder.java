@@ -25,11 +25,11 @@ public class KohonenNetworkLearningBuilder {
 
 // #MARK - Constructors
 
-    KohonenNetworkLearningBuilder(){
+    public KohonenNetworkLearningBuilder(){
         init(DEFAULT_ERA_COUNT, DEFAULT_LEARNING_NORM_FROM, DEFAULT_LEARNING_NORM_TO, DEFAULT_LEARNING_NORM_DECREMENT_STEP_VALUE, 1, null);
     }
 
-    KohonenNetworkLearningBuilder(int learningEraCount, double learningNormFrom, double learningNormTo, double learningNormDecrementStepValue, int clusterCount, List<double[]> learningVectors){
+    public KohonenNetworkLearningBuilder(int learningEraCount, double learningNormFrom, double learningNormTo, double learningNormDecrementStepValue, int clusterCount, List<double[]> learningVectors){
         init(learningEraCount, learningNormFrom, learningNormTo, learningNormDecrementStepValue, clusterCount, learningVectors);
     }
 

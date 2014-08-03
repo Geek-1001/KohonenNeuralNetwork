@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="#fff"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:id="@+id/layout_1">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/bitmap_1"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/bitmap_2"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_1"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="Choose image"
+        android:onClick="onImageChoose"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_1"
+        android:layout_marginTop="90dp"
+        android:layout_centerHorizontal="true"
+        android:text="Learn 1 and 2"
+        android:onClick="onLearn"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_1"
+        android:layout_marginTop="160dp"
+        android:layout_centerHorizontal="true"
+        android:text="Recognize"
+        android:onClick="onRecognize"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_1"
+        android:layout_marginTop="240dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="18sp"
+        android:textColor="@android:color/holo_green_light"
+        android:text="Output here..."
+        android:id="@+id/output"/>
+
+
+
+</RelativeLayout>

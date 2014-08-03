@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#111"
     android:padding="25dp"
-    tools:context="com.hornet.kohonenneuralnetwork.MainActivity"
+    tools:context="com.hornet.kohonenneuralnetwork.ui.MainActivity"
     tools:ignore="MergeRootFrame" >
 
     <EditText

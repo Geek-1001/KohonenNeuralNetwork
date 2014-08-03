@@ -26,11 +26,11 @@ public class KohonenNetwork {
 
 // #MARK - Constructors
 
-    KohonenNetwork(Context context){
+    public KohonenNetwork(Context context){
         buildNetwork(context, null);
     }
 
-    KohonenNetwork(Context context, KohonenNetworkBuilder networkBuilder){
+    public KohonenNetwork(Context context, KohonenNetworkBuilder networkBuilder){
         buildNetwork(context, networkBuilder);
     }
 
